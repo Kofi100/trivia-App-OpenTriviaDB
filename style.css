@@ -1,0 +1,38 @@
+
+
+
+
+
+
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;/*reason why you could reposition the questions at the center of the page*/
+    justify-content: center;
+    align-items:center;
+
+}
+
+
+
+
+#card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#card2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+button{
+    min-width: 15rem;/*25rem doesn't work for mobile devices. check that out first*/
+    row-gap: 10px;
+}
+.buttonParent{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
