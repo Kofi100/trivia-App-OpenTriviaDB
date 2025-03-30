@@ -9,7 +9,7 @@ This is a web app using the OpenTriviaDB API on the internet to create trivia qu
 
 # Link
 
-<a href=""> <img src="./images/needed/githubPages.jpg" style="height:100px"></a>
+<a href="https://kofi100.github.io/trivia-App-OpenTriviaDB/"> <img src="./images/needed/githubPages.jpg" style="height:100px"></a>
 
 # Contacts
 
