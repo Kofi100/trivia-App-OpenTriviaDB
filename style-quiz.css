@@ -51,3 +51,10 @@ button{
 p#finalScore {
     font-size: 3rem;
 }
+.disabled {
+    pointer-events: none; /* Prevent clicking */
+    opacity: 0.8; /* Make it look inactive */
+}
+.fade {
+    transition: background-color 0.5s ease-in-out;
+}

@@ -105,15 +105,49 @@ function getRandomNumber(min, max) {
 
 function checkandRewardMarks(elementThatIsRequired) {
     // if (a === 0) {
+    document.querySelectorAll(".buttonAnswer").forEach((element, index) => { 
+        if (element.classList.contains("correct")) {
+            element.style.backgroundColor="blue"
+        }
+        else {
+            element.style.backgroundColor = "red"
+        }
+        
+        
+        element.classList.add("disabled")
+        element.classList.add("fade")
+
+    })
        if (elementThatIsRequired.classList.contains("correct")) {
         scoreNumber += 1;
         console.log(scoreNumber);
-        document.getElementById("score").innerHTML = `Score: ${scoreNumber}`;
-        elementThatIsRequired.classList.remove("correct");
+           document.getElementById("score").innerHTML = `Score: ${scoreNumber}`;
+        //    elementThatIsRequired.style.backgroundColor="blue"
+          
     }
+    //    else {
+    //        elementThatIsRequired.style.backgroundColor="red"
+    // }
+
+    setTimeout(() => {
+        //looks through all the buttonAnswers,sets them to white and removes 
+        //the fade,disabled and correct classes from them if they're the correct answer
+        document.querySelectorAll(".buttonAnswer").forEach((element, index) => { 
+            element.style.backgroundColor = "white"
+            element.classList.remove("disabled")
+            element.classList.remove("fade")
+            if (element.classList.contains("correct")) {
+                element.classList.remove("correct")
+            }
+    
+        })
+        // if (elementThatIsRequired.classList.contains("correct")) {
+        //     elementThatIsRequired.classList.remove("correct");
+        // }
+        // elementThatIsRequired.style.backgroundColor="white"
+
 
     incorrectNo = 0;
-
     // Only increase questionNumber when a button is clicked
     if (questionNumber < 9) {
         questionNumber += 1;
@@ -139,6 +173,9 @@ function checkandRewardMarks(elementThatIsRequired) {
             
         }
         } 
+        
+    },2000)
+    
     //  a+=1   
     // }
  
