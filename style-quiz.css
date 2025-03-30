@@ -1,5 +1,7 @@
+
 @import url("color-palette.css");
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&display=swap');
+
 body{
     display: flex;
     flex-direction: column;
@@ -8,33 +10,44 @@ body{
     align-items:center;
 
 }
+
 #card{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--primary);
+    font-family:"Big Shoulders", sans-serif;
     padding: 2rem;
     padding-bottom: 3rem;
     border-radius: .5rem;
+    background-color: var(--primary);
     /* color: var(--background); */
-    font-family:"Big Shoulders", sans-serif;
-}
-h1,p{
-    text-align: center;
-}
-h1{
-    margin-bottom: 0;
-}
-p{
     font-size: larger;
+}
+#card2{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-family:"Big Shoulders", sans-serif;
+    padding: 2rem;
+    padding-bottom: 3rem;
+    border-radius: .5rem;
+    background-color: var(--primary);
+    /* color: var(--background); */
+}
+button{
+    min-width: 15rem;/*25rem doesn't work for mobile devices. check that out first*/
+    row-gap: 10px;
+    font-family:"Big Shoulders", sans-serif;
+    font-size: 2rem;
+    border-radius:.25rem
+
 }
 .buttonParent{
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
 }
-button{
-    font-family:"Big Shoulders", sans-serif;
-    font-size: 2rem;
-    border-radius:.25rem
+
+p#finalScore {
+    font-size: 3rem;
 }
