@@ -2,10 +2,27 @@
 
 This is a web app using the OpenTriviaDB API on the internet to create trivia questions.
 
+It can:
+
+- generate random questions depending on the category you pick.
+- has a score system to track how many questions you got right
+- and the like.
+
 ## Built with
 
 - HTML
 - CSS
+- JavaScript
+
+# Screenshots
+
+## Main Page
+
+![](./screenshots/screenshot-Desktop.jpeg)
+
+## Quiz Page
+
+![](./screenshots/screenshot-Desktop-quiz.jpeg)
 
 # Link
 
