@@ -33,3 +33,7 @@ It can:
 <a href="https://github.com/Kofi100"><img src="./images/needed/github-mark/github-mark-white.svg" style=""> </a>
 <a href="https://www.frontendmentor.io/profile/Kofi100">
 <img src="./images/needed/frontEndMentor.png" style="width:200px"></a>
+
+# Credits
+
+[![Open Trivia Database](https://img.shields.io/badge/Powered%20by-OpenTDB-blue?style=flat&logo=databricks)](https://opentdb.com/)
