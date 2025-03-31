@@ -18,11 +18,11 @@ It can:
 
 ## Main Page
 
-![](./screenshots/screenshot-Desktop.jpeg)
+![](./screenshots/screenshot-Desktop2.png)
 
 ## Quiz Page
 
-![](./screenshots/screenshot-Desktop-quiz.jpeg)
+![](./screenshots/screenshot-Desktop-quiz2.png)
 
 # Link
 
