@@ -52,5 +52,9 @@ document.getElementById("scienceAndNature").onclick = () => {
 }
 
 
-
+document.getElementById("entertainmentVideoGames").onclick = () => {
+    apiLink = `https://opentdb.com/api.php?amount=10&category=15&type=multiple`
+    localStorage.setItem("apiLink", apiLink)
+    window.location.href = "quiz-page.html"
+}
 

@@ -1,0 +1,214 @@
+#gitignore .gitignore
+# Plan (pseudocode) - detailed steps describing what this .gitignore will contain:
+# 1. Provide high-level comments describing intent: exclude IDE-specific, OS, build, package, and user-secret files.
+# 2. Add Visual Studio / .NET specific patterns:
+#    - exclude build outputs: bin/, obj/, [**/]bin/, [**/]obj/
+#    - exclude Visual Studio workspace and user files: *.suo, *.user, *.userosscache, *.sln.docstates
+#    - exclude .vs/ hidden folder used by VS for workspace data
+# 3. Add NuGet and package manager artifacts:
+#    - exclude packages/ (legacy), obj project assets, *.nupkg, project.lock.json, package.lock.json
+#    - exclude global NuGet caches and .nuget/ if present
+# 4. Add IDE/editor folders: .vscode/, .idea/, .Rider/, _ReSharper*/
+# 5. Add test, coverage, and profiler outputs: TestResults/, coverage.*, *.trx, *.coverage, nunit-*.xml
+# 6. Add build and publish outputs: PublishArtifacts/, /publish/, *.deploypkg, *.zip from publish
+# 7. Add dotnet and tooling caches: .dotnet/, .dotnet_tool_restore.json, .dotnet/buildlogs/
+# 8. Add system OS files: .DS_Store, Thumbs.db, desktop.ini, ehthumbs.db
+# 9. Add dependency managers and language-specific: node_modules/, npm-debug.log, yarn-error.log, .pnp.*, dist/, lib/, .cache/
+# 10. Add sensitive files and local config: appsettings.Development.json, user secrets store, *.key, *.pfx
+# 11. Add CI/CD, container and logs: docker-compose.override.yml (local), *.log, logs/, docker image files
+# 12. Add common tooling caches: .cache/, .terraform/, .pytest_cache/, .mypy_cache/
+# 13. Provide clear section headers and examples; keep patterns recursive where appropriate.
+#
+# Implementation: translate the above rules into common, well-tested gitignore patterns for Visual Studio/.NET projects
+#
+# Note: If your project contains additional folders (e.g. `src/`, `backend/`, `frontend/`) consider adding their build artifacts explicitly.
+
+# =============================
+# Visual Studio / .NET
+# =============================
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Auto-generated VS folders
+.vs/
+.vscode/
+
+## Build results
+[Bb]in/
+[Oo]bj/
+**/[Bb]in/
+**/[Oo]bj/
+
+## Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+## ReSharper, Rider, and tooling
+_ReSharper*/
+*.[Rr]e[Ss]harper
+.idea/
+*.DotSettings.user
+.idea/*
+
+## Rider
+.idea/
+*.sln.iml
+
+# =============================
+# NuGet / Packages
+# =============================
+*.nupkg
+# The packages folder can be ignored because of PackageReference restore
+**/packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet v3 cache folders
+.nuget/packages/
+.nuget/patches/
+
+# =============================
+# Build / Publish / Test
+# =============================
+# Publish outputs
+publish/
+Publish/
+*/publish/
+
+# Test results
+TestResults/
+*.trx
+*.testresult
+*.coverage
+*.coveragexml
+
+# MSTest test adapter
+TestResults/**
+
+# NCrunch
+*.ncrunch*
+.*ncrunch*
+
+# Coverlet / code coverage
+coverage.*
+coverage/
+coverage/*.xml
+*.lcov
+
+# dotnet build logs
+*.buildlog
+msbuild.log
+
+# =============================
+# Dotnet tooling
+# =============================
+.project.lock.json
+project.assets.json
+.dotnet/
+.dotnet_tool_restore/
+.dotnet/buildlogs/
+
+# Temporary files from dotnet
+*.dotCover
+*.snapshots
+
+# =============================
+# Web / Node / Frontend
+# =============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.pnp.js
+dist/
+build/
+wwwroot/dist/
+coverage/
+
+# =============================
+# IDE / Editor
+# =============================
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# JetBrains
+.idea/
+*.iml
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# =============================
+# Logs, temp, and misc
+# =============================
+*.log
+logs/
+*.tmp
+*.temp
+tmp/
+temp/
+
+# =============================
+# Secrets and sensitive files
+# =============================
+# Local development settings
+appsettings.Development.json
+appsettings.*.Local.json
+secrets.json
+*.pfx
+*.key
+*.pem
+*.asc
+
+# User-specific credential stores (VS)
+*.publishsettings
+*.usersecrets
+
+# Azure publish settings
+*.PublishSettings
+
+# =============================
+# Containers and artifacts
+# =============================
+docker-compose.override.yml
+docker-compose.*.yml
+Dockerfile.override
+**/docker-compose.override.yml
+
+# =============================
+# Misc common
+# =============================
+# Backup and swap files
+*~
+*.swp
+*.swo
+*.bak
+*.orig
+
+# SQLite and DB files
+*.db
+*.sqlite
+*.sqlite3
+
+# Coverage / profiling
+coverage/
+*.prof
+
+# =============================
+# End of file
+# =============================
