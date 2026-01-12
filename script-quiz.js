@@ -1,4 +1,3 @@
-
 window.onload = sendApiRequest;//runs function sendApiRequest when the window is loaded.
 var questionNumber=0
 var randomNumber=0
@@ -6,6 +5,8 @@ var scoreNumber = 0
 var a=0
 var data
 let getApiLink=localStorage.getItem("apiLink")
+//adds
+let busy = false;
 //gets a response and turns it into a json(since the data is a json file)
 //fortunately it seems that the url randomizes the question so yeah...that's to our benefit.
 async function sendApiRequest() {
@@ -55,43 +56,35 @@ function useApiData(data) {
     let questionNumberTracker = document.getElementById("questionNumberTracker")
     questionNumberTracker.innerHTML = `Question No:${questionNumber + 1}`
     
-    
     let incorrectNo = 0;
 
-    let answer1 = document.getElementById("answer1");
-    let answer2 = document.getElementById("answer2");
-    let answer3 = document.getElementById("answer3");
-    let answer4 = document.getElementById("answer4");
+    // get answer buttons
+    const buttons = Array.from(document.querySelectorAll(".buttonAnswer"));
 
-    // answer1.innerHTML = `${data.results[questionNumber].correct_answer}`
-    randomNumber=getRandomNumber(0, 3)
-    console.log(`randomNumber:${randomNumber}`)
-    
-    // console.log()
-    document.querySelectorAll(".buttonAnswer").forEach((element, index) => {
-         // Remove any existing event listener before adding a new one
-        // element.replaceWith(element.cloneNode(true)); // Removes all event listeners by replacing it with a clone,works like 
-        //duplicate resource removal in Godot/Blazium
-        //this prevents multiple calls of the click eventListener by keeping only one eventListener added everytime.
-        
-        if (index == randomNumber) {
-            element.classList.add("correct")
-            element.innerHTML = `${data.results[questionNumber].correct_answer}`
+    randomNumber = getRandomNumber(0, 3);
+    console.log(`randomNumber:${randomNumber}`);
+
+    buttons.forEach((element, index) => {
+        // clear previous state
+        element.classList.remove("correct");
+        element.classList.remove("disabled");
+        element.classList.remove("fade");
+        element.style.backgroundColor = "white";
+        delete element.dataset.correct;
+
+        if (index === randomNumber) {
+            element.classList.add("correct"); // optional visual marker
+            element.dataset.correct = "true";
+            element.textContent = data.results[questionNumber].correct_answer;
+        } else {
+            element.dataset.correct = "false";
+            element.textContent = data.results[questionNumber].incorrect_answers[incorrectNo];
+            incorrectNo += 1;
         }
-        else {
-            element.innerHTML = `${data.results[questionNumber].incorrect_answers[incorrectNo]}`
-            incorrectNo += 1
-        }
-        // element.addEventListener("click", () => checkandRewardMarks(element))
-        
-        // Using .onclick ensures only one event is assigned
-        //meaning that addEventListener adds one EventListener everytime we run it.
+
+        // ensure a single handler that respects the busy/disabled guard
         element.onclick = () => checkandRewardMarks(element);
-        
-        //()=> near the custom fxn checkandRewardMarks sends this as function reference,
-        //preventing it from immediately running.
-        // a=0
-    })
+    });
 }
 function getRandomNumber(min, max) {
     // number = Math.floor(Math.random() * (max - min)) + min;
@@ -104,79 +97,59 @@ function getRandomNumber(min, max) {
 }
 
 function checkandRewardMarks(elementThatIsRequired) {
-    // if (a === 0) {
-    document.querySelectorAll(".buttonAnswer").forEach((element, index) => { 
-        if (element.classList.contains("correct")) {
-            element.style.backgroundColor="blue"
-        }
-        else {
-            element.style.backgroundColor = "red"
-        }
-        
-        
-        element.classList.add("disabled")
-        element.classList.add("fade")
+    // ignore if we're already processing or the clicked button is disabled
+    if (busy) return;
+    if (elementThatIsRequired.classList.contains("disabled")) return;
 
-    })
-       if (elementThatIsRequired.classList.contains("correct")) {
+    busy = true;
+
+    const buttons = document.querySelectorAll(".buttonAnswer");
+    buttons.forEach((element) => { 
+        if (element.dataset && element.dataset.correct === "true") {
+            element.style.backgroundColor = "blue";
+        } else {
+            element.style.backgroundColor = "red";
+        }
+
+        element.classList.add("disabled");
+        element.classList.add("fade");
+    });
+
+    if (elementThatIsRequired.dataset && elementThatIsRequired.dataset.correct === "true") {
         scoreNumber += 1;
         console.log(scoreNumber);
-           document.getElementById("score").innerHTML = `Score: ${scoreNumber}`;
-        //    elementThatIsRequired.style.backgroundColor="blue"
-          
+        document.getElementById("score").innerHTML = `Score: ${scoreNumber}`;
     }
-    //    else {
-    //        elementThatIsRequired.style.backgroundColor="red"
-    // }
 
     setTimeout(() => {
-        //looks through all the buttonAnswers,sets them to white and removes 
-        //the fade,disabled and correct classes from them if they're the correct answer
-        document.querySelectorAll(".buttonAnswer").forEach((element, index) => { 
-            element.style.backgroundColor = "white"
-            element.classList.remove("disabled")
-            element.classList.remove("fade")
-            if (element.classList.contains("correct")) {
-                element.classList.remove("correct")
+        // reset buttons
+        document.querySelectorAll(".buttonAnswer").forEach((element) => { 
+            element.style.backgroundColor = "white";
+            element.classList.remove("disabled");
+            element.classList.remove("fade");
+            element.classList.remove("correct");
+            delete element.dataset.correct;
+        });
+
+        // advance question
+        if (questionNumber < 9) {
+            questionNumber += 1;
+            useApiData(data);
+            console.log(`Question Number:${questionNumber+1}`);
+        } else {
+            console.log("Quiz complete!");
+            document.getElementById("card").style.display = "none";
+            document.getElementById("card2").style.display = "flex";
+            document.getElementById("finalScore").innerText = `Final Score:${scoreNumber}`;
+            document.getElementById("retry").onclick = () => {
+                sendApiRequest();
+                document.getElementById("card").style.display = "flex";
+                document.getElementById("card2").style.display = "none";
+                questionNumber = 0;
+                scoreNumber = 0;
             }
-    
-        })
-        // if (elementThatIsRequired.classList.contains("correct")) {
-        //     elementThatIsRequired.classList.remove("correct");
-        // }
-        // elementThatIsRequired.style.backgroundColor="white"
-
-
-    incorrectNo = 0;
-    // Only increase questionNumber when a button is clicked
-    if (questionNumber < 9) {
-        questionNumber += 1;
-        useApiData(data); // Use the already fetched data instead of refetching
-        // sendApiRequest();
-        console.log(`Question Number:${questionNumber+1}`);
-        
-    } else {
-        console.log("Quiz complete!");
-        document.getElementById("card").style.display = "none"
-        document.getElementById("card2").style.display = "flex"
-        document.getElementById("finalScore").innerText = `Final Score:${scoreNumber}`
-        //on clicking the retry Button,
-        document.getElementById("retry").onclick = () => {
-            //send another API request
-            sendApiRequest()
-            //hide the final Score card and show the Question card
-            document.getElementById("card").style.display = "flex"
-            document.getElementById("card2").style.display = "none"
-            //reset the question Number and Score Number.
-            questionNumber = 0
-            scoreNumber=0
-            
         }
-        } 
-        
-    },2000)
-    
-    //  a+=1   
-    // }
- 
+
+        busy = false;
+    }, 2000);
 }
