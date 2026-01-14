@@ -11,36 +11,35 @@ let busy = false;
 //fortunately it seems that the url randomizes the question so yeah...that's to our benefit.
 async function sendApiRequest() {
     console.log("sendApiRequest being used...");
-    
-    let response = await fetch(getApiLink);
 
-    //code to prevent spamming the API by delaying it by 1 second before sending another Request.
-    if (response.status === 429) { // API rate-limited
-        console.warn("Too many requests! Retrying in 1 second...");
-        setTimeout(sendApiRequest, 1000); // Wait 1 second before retrying
-        return;
+    // Ensure we aren't "busy" while loading new data
+    busy = true; 
+
+    try {
+        let response = await fetch(getApiLink);
+
+        if (response.status === 429) {
+            console.warn("Too many requests! Retrying in 1 second...");
+            setTimeout(sendApiRequest, 1000);
+            return;
+        }
+
+        data = await response.json();
+
+        if (!data.results || data.results.length === 0) {
+            return sendApiRequest(); 
+        }
+
+        document.getElementById("card2").style.display = "none";
+
+        // Reset busy to false before showing data so user can click
+        busy = false;
+        useApiData(data);
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+        busy = false;
     }
-
-
-    data = await response.json();
-    console.log(data);
-    // if (data.results != null && data.results!=[]) {
-    //     useApiData(data)
-    // }    else {
-    //     sendApiRequest()
-    // }
-
-    document.getElementById("card2").style.display = "none"
-    
-    if (!data.results || data.results.length === 0) {
-        console.log("No questions received, retrying...");
-        return sendApiRequest(); // Retry without increasing questionNumber
-    }
-    // questionNumber=0
-    useApiData(data)
-
-    
-    
 }
 function useApiData(data) {
     console.log("\nuseApiData being used...");
@@ -141,13 +140,25 @@ function checkandRewardMarks(elementThatIsRequired) {
             document.getElementById("card").style.display = "none";
             document.getElementById("card2").style.display = "flex";
             document.getElementById("finalScore").innerText = `Final Score:${scoreNumber}`;
-            document.getElementById("retry").onclick = () => {
-                sendApiRequest();
-                document.getElementById("card").style.display = "flex";
-                document.getElementById("card2").style.display = "none";
+           document.getElementById("retry").onclick = () => {
+                // 1. Reset variables FIRST
                 questionNumber = 0;
                 scoreNumber = 0;
-            }
+                busy = false;
+
+                // 2. Reset UI visibility
+                document.getElementById("card").style.display = "flex";
+                document.getElementById("card2").style.display = "none";
+
+                // 3. Clear any lingering colors on buttons just in case
+                document.querySelectorAll(".buttonAnswer").forEach(btn => {
+                    btn.style.backgroundColor = "white";
+                    btn.classList.remove("disabled", "fade");
+                });
+
+                // 4. Fetch new data
+                sendApiRequest();
+            };
         }
 
         busy = false;
